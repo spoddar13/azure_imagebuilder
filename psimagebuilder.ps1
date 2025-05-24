@@ -6,13 +6,13 @@
 $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
 
 # Step 1: Import module
-Import-Module Az.Accounts
+#Import-Module Az.Accounts
 
 # Step 2: get existing context
 $currentAzContext = Get-AzContext
 
 # Destination image resource group
-$imageResourceGroup = "RG" + $timestamp
+$imageResourceGroup = "RG-" + $timestamp
 
 # Location (see possible locations in the main docs)
 $location = "centralindia"
@@ -33,7 +33,7 @@ New-AzResourceGroup -Name $imageResourceGroup -Location $location
 
 #setup role def names, these need to be unique
 $timeInt = $(get-date -UFormat "%s")
-$imageRoleDefName = "Azure Image Builder Image Def" + $timestamp
+$imageRoleDefName = "Azure Image Builder Image Def - " + $timestamp
 $identityName = "aibIdentity" + $timestamp
 
 ## Add Azure PowerShell modules to support AzUserAssignedIdentity and Azure VM Image Builder
