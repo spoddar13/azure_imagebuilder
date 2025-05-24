@@ -51,7 +51,6 @@ $myRoleImageCreationUrl = 'https://raw.githubusercontent.com/spoddar13/azure_ima
 $myRoleImageCreationPath = "myRoleImageCreation.json"
 Invoke-WebRequest -Uri $myRoleImageCreationUrl -OutFile $myRoleImageCreationPath -UseBasicParsing
 
-#$myRoleImageCreationPath = ".\RoleImageCreation.json"
 
 #update role definition template
 $Content = Get-Content -Path $myRoleImageCreationPath -Raw
@@ -71,7 +70,7 @@ $RoleAssignParams = @{
 }
 New-AzRoleAssignment @RoleAssignParams
 
-Remove-Item ".\RoleImageCreation.json"
+#Remove-Item ".\RoleImageCreation.json"
 
 #Download the image configuration template
 $myImageCreationUrl = 'https://raw.githubusercontent.com/spoddar13/azure_imagebuilder/main/ImageTemplateWin.json'

@@ -9,7 +9,7 @@ $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
 #Import-Module Az.Accounts
 
 # Step 2: get existing context
-$currentAzContext = Get-AzContext
+#currentAzContext = Get-AzContext
 
 # Destination image resource group
 $imageResourceGroup = "RG-" + $timestamp
@@ -33,7 +33,7 @@ New-AzResourceGroup -Name $imageResourceGroup -Location $location
 
 #setup role def names, these need to be unique
 $timeInt = $(get-date -UFormat "%s")
-$imageRoleDefName = "Azure Image Builder Image Def - " + $timestamp
+$imageRoleDefName = "Azure Image Builder Image Def-" + $timestamp
 $identityName = "aibIdentity" + $timestamp
 
 ## Add Azure PowerShell modules to support AzUserAssignedIdentity and Azure VM Image Builder
@@ -42,24 +42,30 @@ $identityName = "aibIdentity" + $timestamp
 # Create the identity
 New-AzUserAssignedIdentity -ResourceGroupName $imageResourceGroup -Name $identityName -Location $location
 
-$identityNameResourceId = $(Get-AzUserAssignedIdentity -ResourceGroupName $imageResourceGroup -Name $identityName).Id
-$identityNamePrincipalId = $(Get-AzUserAssignedIdentity -ResourceGroupName $imageResourceGroup -Name $identityName).PrincipalId
+#Store the identity resource and principal IDs in variables
+$identityNameResourceId = (Get-AzUserAssignedIdentity -ResourceGroupName $imageResourceGroup -Name $identityName).Id
+$identityNamePrincipalId = (Get-AzUserAssignedIdentity -ResourceGroupName $imageResourceGroup -Name $identityName).PrincipalId
+
+#Downlaod JSON config file to assign permissions to the identity
+$myRoleImageCreationUrl = 'https://raw.githubusercontent.com/spoddar13/azure_imagebuilder/main/RoleImageCreation.json'
+$myRoleImageCreationPath = "myRoleImageCreation.json"
+Invoke-WebRequest -Uri $myRoleImageCreationUrl -OutFile $myRoleImageCreationPath -UseBasicParsing
 
 
+#update role definition template
+$Content = Get-Content -Path $myRoleImageCreationPath -Raw
+$Content = $Content -replace '<subscriptionID>', $subscriptionID
+$Content = $Content -replace '<rgName>', $imageResourceGroup
+$Content = $Content -replace 'Azure Image Builder Service Image Creation Role', $imageRoleDefName 
+$Content | Out-File -FilePath $myRoleImageCreationPath -Force
 
-$aibRoleImageCreationUrl = "https://raw.githubusercontent.com/spoddar13/azure_imagebuilder/main/RoleImageCreation.json"
-$aibRoleImageCreationPath = "aibRoleImageCreation.json"
+#Create role definition
+New-AzRoleDefinition -InputFile $myRoleImageCreationPath
 
-# Download the config
-Invoke-WebRequest -Uri $aibRoleImageCreationUrl -OutFile $aibRoleImageCreationPath -UseBasicParsing
-
-((Get-Content -path $aibRoleImageCreationPath -Raw) -replace '<subscriptionID>', $subscriptionID) | Set-Content -Path $aibRoleImageCreationPath
-((Get-Content -path $aibRoleImageCreationPath -Raw) -replace '<rgName>', $imageResourceGroup) | Set-Content -Path $aibRoleImageCreationPath
-((Get-Content -path $aibRoleImageCreationPath -Raw) -replace 'Azure Image Builder Service Image Creation Role', $imageRoleDefName) | Set-Content -Path $aibRoleImageCreationPath
-
-# Create a role definition
-New-AzRoleDefinition -InputFile  ./aibRoleImageCreation.json
-
-# Grant the role definition to the VM Image Builder service principal
-New-AzRoleAssignment -ObjectId $identityNamePrincipalId -RoleDefinitionName $imageRoleDefName -Scope "/subscriptions/$subscriptionID/resourceGroups/$imageResourceGroup"
-
+#Grant the role definition to the VM Image Builder service principal
+$RoleAssignParams = @{
+    ObjectId           = $identityNamePrincipalId
+    RoleDefinitionName = $imageRoleDefName
+    Scope              = "/subscriptions/$subscriptionID/resourceGroups/$imageResourceGroup"
+}
+New-AzRoleAssignment @RoleAssignParams
