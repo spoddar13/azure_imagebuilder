@@ -45,3 +45,16 @@ $Content = $Content -replace '<rgName>', $imageResourceGroup
 $Content = $Content -replace 'Azure Image Builder Service Image Creation Role', $imageRoleDefName
 $Content | Out-File -FilePath $myRoleImageCreationPath -Force
 
+# setup role def names, these need to be unique
+$imageRoleDefName = "Azure Image Builder Image Def" + $timestamp
+$identityName = "aibIdentity" + $timestamp
+
+## Add Azure PowerShell modules to support AzUserAssignedIdentity and Azure VM Image Builder
+'Az.ImageBuilder', 'Az.ManagedServiceIdentity' | ForEach-Object { Install-Module -Name $_ -AllowPrerelease }
+
+# Create the identity
+New-AzUserAssignedIdentity -ResourceGroupName $imageResourceGroup -Name $identityName -Location $location
+
+$identityNameResourceId = $(Get-AzUserAssignedIdentity -ResourceGroupName $imageResourceGroup -Name $identityName).Id
+$identityNamePrincipalId = $(Get-AzUserAssignedIdentity -ResourceGroupName $imageResourceGroup -Name $identityName).PrincipalId
+
