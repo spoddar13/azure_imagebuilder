@@ -8,7 +8,7 @@ Set-AzContext -SubscriptionId $subscriptionID
 $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
 
 # Destination image resource group name
-$imageResourceGroup = 'myWinImgBuilderRG' + $timestamp
+$imageResourceGroup = 'RG-' + $timestamp
 
 # Azure region
 $location = 'centralindia'
