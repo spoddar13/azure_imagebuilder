@@ -97,21 +97,22 @@ Invoke-WebRequest -Uri $templateUrl -OutFile $templateFilePath -UseBasicParsing
 ((Get-Content -path $templateFilePath -Raw) -replace '<imgBuilderId>', $identityNameResourceId) | Set-Content -Path $templateFilePath
 ((Get-Content -path $templateFilePath -Raw) -replace '20h1-ent', 'win10-21h2-ent-g2') | Set-Content -Path $templateFilePath
 
-
+#staging resource group
 New-AzResourceGroupDeployment -ResourceGroupName $imageResourceGroup -TemplateFile $templateFilePath -TemplateParameterObject @{"api-Version" = "2020-02-14"; "imageTemplateName" = $imageTemplateName; "svclocation" = $location }
 
 # Optional - if you have any errors running the preceding command, run:
-#$getStatus = $(Get-AzImageBuilderTemplate -ResourceGroupName $imageResourceGroup -Name $imageTemplateName)
-#$getStatus.ProvisioningErrorCode 
-#$getStatus.ProvisioningErrorMessage
+$getStatus = $(Get-AzImageBuilderTemplate -ResourceGroupName $imageResourceGroup -Name $imageTemplateName)
+$getStatus.ProvisioningErrorCode 
+$getStatus.ProvisioningErrorMessage
 
 Start-AzImageBuilderTemplate -ResourceGroupName $imageResourceGroup -Name $imageTemplateName -NoWait
 
-$getStatus = $(Get-AzImageBuilderTemplate -ResourceGroupName $imageResourceGroup -Name $imageTemplateName)
+#$getStatus = $(Get-AzImageBuilderTemplate -ResourceGroupName $imageResourceGroup -Name $imageTemplateName)
 # Shows all the properties
-$getStatus | Format-List -Property *
+#$getStatus | Format-List -Property *
 
 # Shows the status of the build
-$getStatus.LastRunStatusRunState 
-$getStatus.LastRunStatusMessage
-$getStatus.LastRunStatusRunSubState
+#$getStatus.LastRunStatusRunState 
+#$getStatus.LastRunStatusMessage
+#$getStatus.LastRunStatusRunSubState
+

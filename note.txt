@@ -6,3 +6,6 @@ Get-AzVMImageOffer -PublisherName "microsoftwindowsdesktop" | Where-Object {$_.O
 
 # Get specific image SKUs for that offer
 Get-AzVMImage -Location "your_region" -PublisherName "microsoftwindowsdesktop" -Offer "windows-11-office-365"
+
+
+reff url https://github.com/MicrosoftDocs/azure-compute-docs/blob/main/articles/virtual-machines/windows/image-builder-virtual-desktop.md
