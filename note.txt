@@ -1,1 +1,8 @@
 Get-AzVmImageSku -Location 'centralindia' -PublisherName 'MicrosoftWindowsDesktop' -Offer 'Windows-11'
+
+
+# Get offers from microsoftwindowsdesktop
+Get-AzVMImageOffer -PublisherName "microsoftwindowsdesktop" | Where-Object {$_.Offer -like "Windows 11*" -and $_.Offer -like "*Office*"}
+
+# Get specific image SKUs for that offer
+Get-AzVMImage -Location "your_region" -PublisherName "microsoftwindowsdesktop" -Offer "windows-11-office-365"
