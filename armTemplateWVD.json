@@ -33,7 +33,7 @@
             "properties": {
                 "buildTimeoutInMinutes": 120,
                 "vmProfile": {
-                    "vmSize": "Standard_D2ads_v5",
+                    "vmSize": "Standard_D2as_v4",
                     "osDiskSizeGB": 127
                 },
                 "source": {
