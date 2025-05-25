@@ -38,7 +38,7 @@ $imageRoleDefName = "Azure Image Builder Image Def-" + $timestamp
 $identityName = "aibIdentity" + $timestamp
 
 ## Add Azure PowerShell modules to support AzUserAssignedIdentity and Azure VM Image Builder
-#'Az.ImageBuilder', 'Az.ManagedServiceIdentity' | ForEach-Object { Install-Module -Name $_ -AllowPrerelease }
+'Az.ImageBuilder', 'Az.ManagedServiceIdentity' | ForEach-Object { Install-Module -Name $_ -AllowPrerelease }
 
 # Create the identity
 New-AzUserAssignedIdentity -ResourceGroupName $imageResourceGroup -Name $identityName -Location $location
@@ -108,12 +108,12 @@ $getStatus.ProvisioningErrorMessage
 
 Start-AzImageBuilderTemplate -ResourceGroupName $imageResourceGroup -Name $imageTemplateName -NoWait
 
-#$getStatus = $(Get-AzImageBuilderTemplate -ResourceGroupName $imageResourceGroup -Name $imageTemplateName)
+$getStatus = $(Get-AzImageBuilderTemplate -ResourceGroupName $imageResourceGroup -Name $imageTemplateName)
 # Shows all the properties
-#$getStatus | Format-List -Property *
+$getStatus | Format-List -Property *
 
 # Shows the status of the build
-#$getStatus.LastRunStatusRunState 
-#$getStatus.LastRunStatusMessage
-#$getStatus.LastRunStatusRunSubState
+$getStatus.LastRunStatusRunState 
+$getStatus.LastRunStatusMessage
+$getStatus.LastRunStatusRunSubState
 
