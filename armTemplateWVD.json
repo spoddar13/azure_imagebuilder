@@ -40,7 +40,7 @@
                     "type": "PlatformImage",
                     "publisher": "MicrosoftWindowsDesktop",
                     "offer": "Windows-11",
-                    "sku": "20h1-ent",
+                    "sku": "PlatformImageSKU",
                     "version": "latest"
                 },
                 "customize": [],

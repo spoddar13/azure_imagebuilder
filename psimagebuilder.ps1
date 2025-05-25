@@ -79,7 +79,7 @@ $imageDefName = "win11avd"
 New-AzGallery -GalleryName $sigGalleryName -ResourceGroupName $imageResourceGroup  -Location $location
 
 # Create the gallery definition
-New-AzGalleryImageDefinition -GalleryName $sigGalleryName -ResourceGroupName $imageResourceGroup -Location $location -Name $imageDefName -OsState generalized -OsType 'Windows' -Publisher 'myCo' -Offer 'Windows' -Sku '10avd'
+New-AzGalleryImageDefinition -GalleryName $sigGalleryName -ResourceGroupName $imageResourceGroup -Location $location -Name $imageDefName -OsState generalized -OsType 'Windows' -Publisher 'myCo' -Offer 'Windows' -Sku 'win11-24h2-ent'
 
 
 $templateUrl = "https://raw.githubusercontent.com/spoddar13/azure_imagebuilder/main/armTemplateWVD.json"
@@ -96,7 +96,7 @@ Invoke-WebRequest -Uri $templateUrl -OutFile $templateFilePath -UseBasicParsing
 ((Get-Content -path $templateFilePath -Raw) -replace '<sharedImageGalName>', $sigGalleryName) | Set-Content -Path $templateFilePath
 ((Get-Content -path $templateFilePath -Raw) -replace '<region1>', $location) | Set-Content -Path $templateFilePath
 ((Get-Content -path $templateFilePath -Raw) -replace '<imgBuilderId>', $identityNameResourceId) | Set-Content -Path $templateFilePath
-((Get-Content -path $templateFilePath -Raw) -replace '20h1-ent', 'win11-24h2-ent') | Set-Content -Path $templateFilePath
+((Get-Content -path $templateFilePath -Raw) -replace 'PlatformImageSKU', 'win11-24h2-ent') | Set-Content -Path $templateFilePath
 
 #staging resource group
 New-AzResourceGroupDeployment -ResourceGroupName $imageResourceGroup -TemplateFile $templateFilePath -TemplateParameterObject @{"api-Version" = "2020-02-14"; "imageTemplateName" = $imageTemplateName; "svclocation" = $location }
