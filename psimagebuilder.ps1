@@ -24,7 +24,7 @@ $subscriptionID = (Get-AzContext).Subscription.Id
 Set-AzContext -SubscriptionId $subscriptionID
 
 # Image template name
-$imageTemplateName = "avd10ImageTemplate01"
+$imageTemplateName = "avd11ImageTemplate01"
 
 # Distribution properties object name (runOutput). Gives you the properties of the managed image on completion
 $runOutputName = "sigOutput"
@@ -35,7 +35,7 @@ New-AzResourceGroup -Name $imageResourceGroup -Location $location
 #setup role def names, these need to be unique
 #$timeInt = $(get-date -UFormat "%s")
 $imageRoleDefName = "Azure Image Builder Image Def-" + $timestamp
-$identityName = "aibIdentity" + $timestamp
+$identityName = "MyIdentity" + $timestamp
 
 ## Add Azure PowerShell modules to support AzUserAssignedIdentity and Azure VM Image Builder
 'Az.ImageBuilder', 'Az.ManagedServiceIdentity' | ForEach-Object { Install-Module -Name $_ -AllowPrerelease }
@@ -96,7 +96,7 @@ Invoke-WebRequest -Uri $templateUrl -OutFile $templateFilePath -UseBasicParsing
 ((Get-Content -path $templateFilePath -Raw) -replace '<sharedImageGalName>', $sigGalleryName) | Set-Content -Path $templateFilePath
 ((Get-Content -path $templateFilePath -Raw) -replace '<region1>', $location) | Set-Content -Path $templateFilePath
 ((Get-Content -path $templateFilePath -Raw) -replace '<imgBuilderId>', $identityNameResourceId) | Set-Content -Path $templateFilePath
-((Get-Content -path $templateFilePath -Raw) -replace 'PlatformImageSKU', 'win11-24h2-ent') | Set-Content -Path $templateFilePath
+((Get-Content -path $templateFilePath -Raw) -replace 'PlatformImageSKU', 'win11-24h2-avd-m365') | Set-Content -Path $templateFilePath
 
 #staging resource group
 New-AzResourceGroupDeployment -ResourceGroupName $imageResourceGroup -TemplateFile $templateFilePath -TemplateParameterObject @{"api-Version" = "2020-02-14"; "imageTemplateName" = $imageTemplateName; "svclocation" = $location }

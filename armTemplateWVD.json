@@ -39,7 +39,7 @@
                 "source": {
                     "type": "PlatformImage",
                     "publisher": "MicrosoftWindowsDesktop",
-                    "offer": "Windows-11",
+                    "offer": "office-365",
                     "sku": "PlatformImageSKU",
                     "version": "latest"
                 },
