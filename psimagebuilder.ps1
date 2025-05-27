@@ -8,7 +8,9 @@ Import-Module Az.Accounts
 
 
 # Step 2: get existing context
-#$currentAzContext = Get-AzContext
+$currentAzContext = (Get-AzContext).Subscription.Id
+Set-AzContext -SubscriptionId $currentAzContext
+
 
 # Destination image resource group
 $imageResourceGroup = "RG-" + $timestamp
