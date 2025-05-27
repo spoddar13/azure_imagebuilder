@@ -1,4 +1,4 @@
-Remove-Item -Path ".\azure_imagebuilder" -Recurse -Force
+#Remove-Item -Path ".\azure_imagebuilder" -Recurse -Force
 
 $resourceGroups = az group list --query "[].name" --output tsv
 'Total Resource groups count ' + $resourceGroups.COUNT

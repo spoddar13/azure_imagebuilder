@@ -8,20 +8,18 @@ Import-Module Az.Accounts
 
 
 # Step 2: get existing context
-$currentAzContext = (Get-AzContext).Subscription.Id
-Set-AzContext -SubscriptionId $currentAzContext
+#$currentAzContext = Get-AzContext
 
+# Your subscription. This command gets your current subscription
+#Set Subscription
+$subscriptionID = (Get-AzContext).Subscription.Id
+Set-AzContext -SubscriptionId $subscriptionID
 
 # Destination image resource group
 $imageResourceGroup = "RG-" + $timestamp
 
 # Location (see possible locations in the main docs)
 $location = "centralindia"
-
-# Your subscription. This command gets your current subscription
-#Set Subscription
-$subscriptionID = (Get-AzContext).Subscription.Id
-Set-AzContext -SubscriptionId $subscriptionID
 
 # Image template name
 $imageTemplateName = "avd11ImageTemplate01"
@@ -72,8 +70,8 @@ $RoleAssignParams = @{
 New-AzRoleAssignment @RoleAssignParams
 
 
-$sigGalleryName = "MyImageGallary"
-$imageDefName = "win11avd"
+$sigGalleryName = "MyImageGallary" + $timestamp
+$imageDefName = "win11avdmultiWithOffice"
 
 # Create the gallery
 New-AzGallery -GalleryName $sigGalleryName -ResourceGroupName $imageResourceGroup  -Location $location

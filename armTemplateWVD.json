@@ -58,7 +58,7 @@
                         "galleryImageId": "/subscriptions/6f74c1b8-1c91-47aa-b3a0-27f1eeb19c24/resourceGroups/RG-20250526-222541/providers/Microsoft.Compute/galleries/MyImageGallary/images/win11avd",
                         "runOutputName": "sigOutput",
                         "artifactTags": {
-                            "source": "wvd10",
+                            "source": "wvd11",
                             "baseosimg": "windows11"
                         },
                         "replicationRegions": [
