@@ -27,7 +27,7 @@
             "identity": {
                 "type": "UserAssigned",
                 "userAssignedIdentities": {
-                    "<imgBuilderId>": {}
+                    "/subscriptions/6f74c1b8-1c91-47aa-b3a0-27f1eeb19c24/resourcegroups/RG-20250526-222541/providers/Microsoft.ManagedIdentity/userAssignedIdentities/MyIdentity20250526-222541": {}
                 }
             },
             "properties": {
@@ -40,21 +40,29 @@
                     "type": "PlatformImage",
                     "publisher": "MicrosoftWindowsDesktop",
                     "offer": "office-365",
-                    "sku": "PlatformImageSKU",
+                    "sku": "win11-24h2-avd-m365",
                     "version": "latest"
                 },
-                "customize": [],
+                "customize": [
+                    {
+                        "type": "PowerShell",
+                        "name": "InstallGoogleChrome",
+                        "runElevated": true,
+                        "runAsSystem": true,
+                        "scriptUri": "https://raw.githubusercontent.com/spoddar13/azure_imagebuilder/main/0_installConfFsLogix.ps1"
+                    }
+                ],
                 "distribute": [
                     {
                         "type": "SharedImage",
-                        "galleryImageId": "/subscriptions/<subscriptionID>/resourceGroups/<rgName>/providers/Microsoft.Compute/galleries/<sharedImageGalName>/images/<imageDefName>",
-                        "runOutputName": "<runOutputName>",
+                        "galleryImageId": "/subscriptions/6f74c1b8-1c91-47aa-b3a0-27f1eeb19c24/resourceGroups/RG-20250526-222541/providers/Microsoft.Compute/galleries/MyImageGallary/images/win11avd",
+                        "runOutputName": "sigOutput",
                         "artifactTags": {
                             "source": "wvd10",
                             "baseosimg": "windows11"
                         },
                         "replicationRegions": [
-                            "<region1>"
+                            "centralindia"
                         ]
                     }
                 ]

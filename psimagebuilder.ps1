@@ -1,16 +1,14 @@
 #Connect-AzAccount
 
-
-
 #Timestamp
 $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
 
 # Step 1: Import module
-#Import-Module Az.Accounts
+Import-Module Az.Accounts
 
 
 # Step 2: get existing context
-#currentAzContext = Get-AzContext
+#$currentAzContext = Get-AzContext
 
 # Destination image resource group
 $imageResourceGroup = "RG-" + $timestamp
