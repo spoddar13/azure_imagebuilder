@@ -49,7 +49,7 @@
                         "name": "InstallGoogleChrome",
                         "runElevated": true,
                         "runAsSystem": true,
-                        "scriptUri": "https://raw.githubusercontent.com/spoddar13/azure_imagebuilder/main/0_installConfFsLogix.ps1"
+                        "scriptUri": "https://raw.githubusercontent.com/spoddar13/azure_imagebuilder/main/Software/GoogleChrome.ps1"
                     }
                 ],
                 "distribute": [
