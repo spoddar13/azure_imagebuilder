@@ -70,7 +70,7 @@ $RoleAssignParams = @{
 New-AzRoleAssignment @RoleAssignParams
 
 
-$sigGalleryName = "MyImageGallary" + $timestamp
+$sigGalleryName = "MyImageGallary"
 $imageDefName = "win11avdmultiWithOffice"
 
 # Create the gallery
